@@ -8,5 +8,6 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
 	site: 'https://nullvoyager47.github.io',
 	base: '/BlogWebsite',
+	output: "static",
 	integrations: [mdx(), sitemap()],
 });
