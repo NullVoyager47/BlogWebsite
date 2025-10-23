@@ -29,4 +29,4 @@ This leaves only the start button and bumpers, I will need to decide later on wh
 
 ### Stay Tuned
 
-In the next post I will be dissassembling the blaster and preparing it, then its on to the electronics 🎉
+In the next post I will be dissassembling the blaster and preparing it, then its on to the electronics. 🎉
