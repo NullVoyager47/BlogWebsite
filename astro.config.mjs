@@ -1,4 +1,5 @@
-// @ts-check
+import { defineConfig } from 'astro/config';
+import staticAdapter from '@astrojs/static';
 
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
@@ -11,6 +12,7 @@ export default defineConfig({
 	output: "static",
 	integrations: [mdx(), sitemap()],
 	build: {
-    assets: 'assets'
-  }
+		assets: 'assets'
+	},
+  	adapter: staticAdapter(),
 });
