@@ -1,0 +1,5 @@
+- [ ] Add Images
+- [ ] Update Styles
+- [ ] Update projects page
+- [ ] Update About Page
+- [ ] Update Home Page
