@@ -1,0 +1,156 @@
+---
+title: 'Nerf Motion Controller 2'
+description: 'Preparing the blaster'
+pubDate: 'Oct 25 2025'
+heroImage: '../../assets/blog-placeholder-3.jpg'
+---
+
+import motionBreadboard from '../../assets/motion-breadboard.jpg';
+
+### What hardware am I using?
+
+For this project I will be using an arduino compatible pro micro, this is because it is small enough to fit in the grip of the blaster, and has an ATmega32U4 microcontroller, meaning it is compatible with the gyroscope I will be using, the MPU6050. For prototyping I will also be using a breadboard and jumper wires. {/* Although the pro micro is not technically an arduino, I will be referring to it as one in this blog for simplicity. */}
+
+### Setting up the motion controls
+
+To start with, I will be making a prototype using a breadboard to test the functionality of the gyroscope. Once I've finished the prototypes i will need to solder the components together directly since there won't be enough space for a breadboard in the blaster shell, and I want to ensure strong connections since the controller will be moving a lot.
+
+This diagram shows how the gyroscope will connect to the pro micro. The vcc and ground pins will obviously connect to the vcc and ground of the pro micro. The SCL on the MPU6050 connects to the digital 3 pin on the pro micro, and the SDA connects to digital 2. 
+
+I then copied this diagram with a breadboard using the same connections, as seen below
+
+<img src={motionBreadboard.src} alt="Breadboard setup with MPU6050 connected to pro micro" style="transform: rotate(-90deg); width: 300px; margin: 1.5em auto; display: block; transform-origin: center center;" />
+
+I used this code to check that the MPU6050 was connected to the pro micro via I2C.
+
+<div style="max-height: 300px; overflow-y: auto; border-radius: 8px;">
+```
+// --------------------------------------
+// i2c_scanner
+//
+// Version 1
+//    This program (or code that looks like it)
+//    can be found in many places.
+//    For example on the Arduino.cc forum.
+//    The original author is not known.
+// Version 2, Juni 2012, Using Arduino 1.0.1
+//     Adapted to be as simple as possible by Arduino.cc user Krodal
+// Version 3, Feb 26  2013
+//    V3 by louarnold
+// Version 4, March 3, 2013, Using Arduino 1.0.3
+//    by Arduino.cc user Krodal.
+//    Changes by louarnold removed.
+//    Scanning addresses changed from 0...127 to 1...119,
+//    according to the i2c scanner by Nick Gammon
+//    https://www.gammon.com.au/forum/?id=10896
+// Version 5, March 28, 2013
+//    As version 4, but address scans now to 127.
+//    A sensor seems to use address 120.
+// Version 6, November 27, 2015.
+//    Added waiting for the Leonardo serial communication.
+//
+//
+// This sketch tests the standard 7-bit addresses
+// Devices with higher bit address might not be seen properly.
+//
+
+#include <Wire.h>
+
+void setup() {
+  Wire.begin();
+
+  Serial.begin(9600);
+  while (!Serial); // Leonardo: wait for Serial Monitor
+  Serial.println("\nI2C Scanner");
+}
+
+void loop() {
+  int nDevices = 0;
+
+  Serial.println("Scanning...");
+
+  for (byte address = 1; address < 127; ++address) {
+    // The i2c_scanner uses the return value of
+    // the Wire.endTransmission to see if
+    // a device did acknowledge to the address.
+    Wire.beginTransmission(address);
+    byte error = Wire.endTransmission();
+
+    if (error == 0) {
+      Serial.print("I2C device found at address 0x");
+      if (address < 16) {
+        Serial.print("0");
+      }
+      Serial.print(address, HEX);
+      Serial.println("  !");
+
+      ++nDevices;
+    } else if (error == 4) {
+      Serial.print("Unknown error at address 0x");
+      if (address < 16) {
+        Serial.print("0");
+      }
+      Serial.println(address, HEX);
+    }
+  }
+  if (nDevices == 0) {
+    Serial.println("No I2C devices found\n");
+  } else {
+    Serial.println("done\n");
+  }
+  delay(5000); // Wait 5 seconds for next scan
+}
+```
+</div>
+<br/>
+
+### Moving the mouse
+To turn the MPU6050's input into mouse movement, I wrote a program which gets the values from the accelerometer and gyroscope, then uses the gyroscope values to move the mouse. I performed a calculation on the gyroscope values to make it usable as mouse input.
+I found that when the MPU6050 wasn't moving, it was giving me values around -350 for the X axis and -100 for the Y axis, so I added these numbers to the raw input, and then scaled the values down to reduce the sensitivity of the mouse movement.
+
+<div style="max-height: 300px; overflow-y: auto; border-radius: 8px;">
+```
+// #include <I2Cdev.h>
+#include <MPU6050.h>
+#include <Mouse.h>
+
+MPU6050 mpu;
+int16_t accelX, accelY, accelZ, gyroX, gyroY, gyroZ;
+int moveX, moveY;
+
+void setup() {
+  Serial.begin(9600);
+  Wire.begin();
+  mpu.initialize();
+  if (!mpu.testConnection()) { while (1); }
+}
+
+void loop() {
+  mpu.getMotion6(&accelX, &accelY, &accelZ, &gyroX, &gyroY, &gyroZ);
+
+  moveY = -(gyroX+350)/100; 
+  moveX = -(gyroY+100)/150; 
+
+  if ((moveX < 2) && (moveX > -3)){
+    moveX = 0;
+  }
+  if ((moveY < 2) && (moveY > -3)){
+    moveY = 0;
+  }
+
+  Serial.print("        | X = ");
+  Serial.print(moveX);
+  Serial.print(" | Y = ");
+  Serial.println(moveY);
+  
+  Mouse.move(moveX, moveY);
+
+  delay(20);
+}
+```
+</div>
+<br/>
+
+### Coming up
+
+Next time I will be prototyping the buttons ready for the components to be assembled inside the blaster

@@ -5,8 +5,8 @@
  */
 
 :root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
+	--accent: #1a73e8;
+	--accent-dark: #1557b0;
 	--black: 15, 18, 25;
 	--gray: 96, 115, 159;
 	--gray-light: 229, 233, 240;
@@ -15,21 +15,24 @@
 	--box-shadow:
 		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%), 0 16px 32px
 		rgba(var(--gray), 33%);
+	--circuit-accent: #2d5a27;
+	--wire-orange: #cc5500;
 }
 @font-face {
 	font-family: "Atkinson";
-	src: url("/fonts/atkinson-regular.woff") format("woff");
+	src: url("/BlogWebsite/fonts/atkinson-regular.woff") format("woff");
 	font-weight: 400;
 	font-style: normal;
 	font-display: swap;
 }
 @font-face {
 	font-family: "Atkinson";
-	src: url("/fonts/atkinson-bold.woff") format("woff");
+	src: url("/BlogWebsite/fonts/atkinson-bold.woff") format("woff");
 	font-weight: 700;
 	font-style: normal;
 	font-display: swap;
 }
+
 body {
 	font-family: "Atkinson", sans-serif;
 	margin: 0;
@@ -61,6 +64,8 @@ h6 {
 }
 h1 {
 	font-size: 3.052em;
+	border-bottom: 2px solid var(--circuit-accent);
+	padding-bottom: 0.3em;
 }
 h2 {
 	font-size: 2.441em;
@@ -109,6 +114,7 @@ code {
 	padding: 2px 5px;
 	background-color: rgb(var(--gray-light));
 	border-radius: 2px;
+	font-family: "Courier New", monospace;
 }
 pre {
 	padding: 1.5em;
@@ -118,7 +124,7 @@ pre > code {
 	all: unset;
 }
 blockquote {
-	border-left: 4px solid var(--accent);
+	border-left: 4px solid var(--wire-orange);
 	padding: 0 0 0 20px;
 	margin: 0px;
 	font-size: 1.333em;

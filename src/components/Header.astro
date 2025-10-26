@@ -10,7 +10,7 @@ import website from '../assets/world-wide-web.png';
 	<nav>
 		<h2><a href="/BlogWebsite">{SITE_TITLE}</a></h2>
 		<div class="internal-links">
-			<HeaderLink href="/BlogWebsite">Home</HeaderLink>
+			<HeaderLink href="/BlogWebsite/">Home</HeaderLink>
 			<HeaderLink href="/BlogWebsite/blog">Blog</HeaderLink>
 			<HeaderLink href="/BlogWebsite/projects">Projects</HeaderLink>
 			<HeaderLink href="/BlogWebsite/about">About</HeaderLink>
@@ -18,12 +18,12 @@ import website from '../assets/world-wide-web.png';
 		<div class="social-links">
 			<a href="my portfolio site" target="_blank">
 				<span class="sr-only">Go to my personal website</span>
-				<img src={website.src} aria-hidden="true" width="32" height="32"
+				<img src={website.src} aria-hidden="true" width="24" height="24"
 				>
 			</a>
 			<a href="https://github.com/NullVoyager47" target="_blank">
 				<span class="sr-only">Go to my GitHub page</span>
-				<img src={githubIcon.src} aria-hidden="true" width="32" height="32"
+				<img src={githubIcon.src} aria-hidden="true" width="24" height="24"
 				>
 			</a>
 		</div>
@@ -51,9 +51,9 @@ import website from '../assets/world-wide-web.png';
 		justify-content: space-between;
 	}
 	nav a {
-		padding: 1em 0.5em;
+		padding: 0.7em 0.4em;
 		color: var(--black);
-		border-bottom: 4px solid transparent;
+		border-bottom: 3px solid transparent;
 		text-decoration: none;
 	}
 	nav a.active {
