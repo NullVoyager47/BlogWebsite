@@ -6,6 +6,7 @@ heroImage: '../../assets/blog-placeholder-3.jpg'
 ---
 
 import motionBreadboard from '../../assets/motion-breadboard.jpg';
+import mpuDiagram from '../../assets/mpu_diagram.png';
 
 ### What hardware am I using?
 
@@ -15,7 +16,10 @@ For this project I will be using an arduino compatible pro micro, this is becaus
 
 To start with, I will be making a prototype using a breadboard to test the functionality of the gyroscope. Once I've finished the prototypes i will need to solder the components together directly since there won't be enough space for a breadboard in the blaster shell, and I want to ensure strong connections since the controller will be moving a lot.
 
-This diagram shows how the gyroscope will connect to the pro micro. The vcc and ground pins will obviously connect to the vcc and ground of the pro micro. The SCL on the MPU6050 connects to the digital 3 pin on the pro micro, and the SDA connects to digital 2. 
+This diagram shows how the gyroscope will connect to the pro micro in the simplest way possible. The vcc and ground pins will obviously connect to the vcc and ground of the pro micro. The SCL on the MPU6050 connects to the digital 3 pin on the pro micro, and the SDA connects to digital 2. 
+
+<img src={mpuDiagram.src} alt="Breadboard setup with MPU6050 connected to pro micro" style="transform: rotate(-90deg); width: 300px; margin: 1.5em auto; display: block; transform-origin: center center;" />
+
 
 I then copied this diagram with a breadboard using the same connections, as seen below
 
@@ -150,6 +154,8 @@ void loop() {
 ```
 </div>
 <br/>
+
+I also added a minimum movement threshold to prevent small movements of the controller from moving the mouse, although this solution will likely need refining in the future.
 
 ### Coming up
 
