@@ -1,0 +1,84 @@
+---
+title: 'Nerf Motion Controller 3'
+description: 'motion controls'
+pubDate: 'Oct 28 2025'
+heroImage: '../../assets/blog-placeholder-3.jpg'
+---
+
+### Wiring the buttons
+
+I am using a breadboard for prototyping, which means I can connect all of the buttons to the ground strip, however when they are inside the blaster I will need to connect the ground wires to the buttons in a chain, with each button providing a ground connection to the next.This will be easy because I am using 4 pin buttons, which have two pairs of legs, with the opposite egs connected together, allowing me to pass the ground connection through the button. However for now I am just prototyping so I'll deal with connecting the buttons together later.
+
+### Simulating mouse clicks
+
+For the triggers, I will need to simulate a left and right click, as well as holding the button so that the player can use automatic weapons. I wrote a code which checks if the button is pressed, and used the press and release functions of the Mouse library to simulate the mouse clicks. I will use this block twice, with the second one using MOUSE_RIGHT to simulate a right click.
+
+<div style="max-height: 300px; overflow-y: auto; border-radius: 8px;">
+```
+#include <Mouse.h>
+
+const int rightTrigger = 8;
+int lastButtonState = HIGH;
+
+void setup() {
+  pinMode(rightTrigger, INPUT_PULLUP); 
+  Mouse.begin(); 
+}
+
+void loop() {
+  int currentButtonState = digitalRead(rightTrigger);
+
+  if (currentButtonState != lastButtonState) {
+    if (currentButtonState == LOW) {
+      Mouse.press(MOUSE_LEFT); 
+    } 
+    else {
+      Mouse.release(MOUSE_LEFT); 
+    }
+    lastButtonState = currentButtonState;
+  }
+  
+  delay(10); 
+}
+```
+</div>
+<br/>
+
+### Simulating key presses
+
+The logic for key presses is almost identical to that of mouse clicks, the only difference being that I will use the Keyboard library instead of the Mouse library. I will use this block for each of the buttons that need to simulate a key press, changing the pin number and the key being pressed for each one.
+
+<div style="max-height: 300px; overflow-y: auto; border-radius: 8px;">
+```
+#include <Keyboard.h>
+
+const int reloadButton = 6;
+int lastButtonState = HIGH;
+
+void setup() {
+  pinMode(reloadButton, INPUT_PULLUP); 
+  Keyboard.begin(); 
+}
+
+void loop() {
+  int currentButtonState = digitalRead(reloadButton);
+
+  if (currentButtonState != lastButtonState) {
+    if (currentButtonState == LOW) {
+      Keyboard.press(KEY_R); 
+    } 
+    else {
+      Keyboard.release(KEY_R); 
+    }
+    lastButtonState = currentButtonState;
+  }
+  
+  delay(10); 
+}
+```
+</div>
+<br/>
+
+### Coming up
+
+Next time I will be preparing the blastershell for electronics, so that I can determine the exact positioning of components so that I can create a functional prototype.
